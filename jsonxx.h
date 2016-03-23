@@ -57,7 +57,8 @@ enum Format {
   JSONx     = 1,     // XML output, JSONx  format. see http://goo.gl/I3cxs
   JXML      = 2,     // XML output, JXML   format. see https://github.com/r-lyeh/JXML
   JXMLex    = 3,     // XML output, JXMLex format. see https://github.com/r-lyeh/JXMLex
-  TaggedXML = 4      // XML output, tagged XML format. see https://github.com/hjiang/jsonxx/issues/12
+  TaggedXML = 4,     // XML output, tagged XML format. see https://github.com/hjiang/jsonxx/issues/12
+  XMLMinimal= 5	     // XML output, Minimal XML format
 };
 
 // Types

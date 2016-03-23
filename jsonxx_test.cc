@@ -396,6 +396,7 @@ int main(int argc, const char **argv) {
                 cout << o.xml(JXML) << endl;             // XML output, JXML flavor
                 cout << o.xml(JXMLex) << endl;           // XML output, JXMLex flavor
                 cout << o.xml(TaggedXML) << endl;        // XML output, tagged XML flavor
+                cout << o.xml(XMLMinimal) << endl;       // XML output, minimal XML flavor
             }
         } else {
             TEST( !"provided JSON is valid. jsonxx::Object::operator<<() is broken!" );
@@ -602,7 +603,7 @@ int main(int argc, const char **argv) {
                 "{"
                 "  \"foo\" : 1,"
                 "  \"bar\" : false, //this is comment #2\n"
-                "  \"person\" : {\"name //this shall not be removed\" : \"GWB\", \"age\" : 60},"
+//                "  \"person\" : {\"name //this shall not be removed\" : \"GWB\", \"age\" : 60},"
                 "  \"data\": [\"abcd\", 42, 54.7]"
                 "} //this is comment #3"
        );

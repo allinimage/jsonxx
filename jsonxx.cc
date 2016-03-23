@@ -645,6 +645,7 @@ std::string escape_tag( const std::string &input, unsigned format ) {
             case jsonxx::JXMLex:
             case jsonxx::JSONx:
             case jsonxx::TaggedXML:
+            case jsonxx::XMLMinimal:
                 map[ byte('&') ] = "&amp;";
                 break;
         }
@@ -712,6 +713,17 @@ std::string open_tag( unsigned format, char type, const std::string &name, const
                 tagname += std::string(" name=\"") + escape_string(name) + "\"";
 
             break;
+
+        case jsonxx::XMLMinimal:
+            if( !name.empty() )
+                tagname = escape_attrib(name);
+            else
+                tagname = "Value";
+
+            if( !name.empty() )
+                tagname += std::string(" name=\"") + escape_string(name) + "\"";
+
+            break;
     }
 
     return std::string("<") + tagname + attr + ">";
@@ -744,6 +756,12 @@ std::string close_tag( unsigned format, char type, const std::string &name ) {
                 return "</"+escape_attrib(name)+">";
             else
                 return "</JsonItem>";
+
+        case jsonxx::XMLMinimal:
+            if( !name.empty() )
+                return "</"+escape_attrib(name)+">";
+            else
+                return "</Value>";
     }
 }
 
@@ -809,7 +827,10 @@ const char *defheader[] = {
          JSONXX_XML_TAG "\n",
 
     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-         JSONXX_XML_TAG "\n"
+         JSONXX_XML_TAG "\n",
+
+	"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+		 JSONXX_XML_TAG "\n"
 };
 
 // order here matches jsonxx::Format enum
@@ -824,7 +845,9 @@ const char *defrootattrib[] = {
 
     "",
 
-    ""
+    "",
+
+	""
 };
 
 } // namespace jsonxx::anon::xml
@@ -846,7 +869,7 @@ std::string Object::json() const {
 
 std::string Object::xml( unsigned format, const std::string &header, const std::string &attrib ) const {
     using namespace xml;
-    JSONXX_ASSERT( format == jsonxx::JSONx || format == jsonxx::JXML || format == jsonxx::JXMLex || format == jsonxx::TaggedXML );
+    JSONXX_ASSERT( format == jsonxx::JSONx || format == jsonxx::JXML || format == jsonxx::JXMLex || format == jsonxx::TaggedXML || format == jsonxx::XMLMinimal );
 
     jsonxx::Value v;
     v.object_value_ = const_cast<jsonxx::Object*>(this);
@@ -873,7 +896,7 @@ std::string Array::json() const {
 
 std::string Array::xml( unsigned format, const std::string &header, const std::string &attrib ) const {
     using namespace xml;
-    JSONXX_ASSERT( format == jsonxx::JSONx || format == jsonxx::JXML || format == jsonxx::JXMLex || format == jsonxx::TaggedXML );
+    JSONXX_ASSERT( format == jsonxx::JSONx || format == jsonxx::JXML || format == jsonxx::JXMLex || format == jsonxx::TaggedXML || format == jsonxx::XMLMinimal );
 
     jsonxx::Value v;
     v.array_value_ = const_cast<jsonxx::Array*>(this);
@@ -947,7 +970,7 @@ std::string reformat( const std::string &input ) {
 
 std::string xml( std::istream &input, unsigned format ) {
     using namespace xml;
-    JSONXX_ASSERT( format == jsonxx::JSONx || format == jsonxx::JXML || format == jsonxx::JXMLex || format == jsonxx::TaggedXML );
+    JSONXX_ASSERT( format == jsonxx::JSONx || format == jsonxx::JXML || format == jsonxx::JXMLex || format == jsonxx::TaggedXML || format == jsonxx::XMLMinimal );
 
     // trim non-printable chars
     for( char ch(0); !input.eof() && input.peek() <= 32; )
