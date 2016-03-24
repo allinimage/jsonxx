@@ -5,6 +5,7 @@ all: lib test
 jsonxx_test: jsonxx_test.cc jsonxx.o
 
 lib: jsonxx.o
+	mkdir -p lib
 	ar -r  "lib/libjsonxx.a" jsonxx.o
 
 test: jsonxx_test
