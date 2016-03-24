@@ -720,9 +720,6 @@ std::string open_tag( unsigned format, char type, const std::string &name, const
             else
                 tagname = "Value";
 
-            if( !name.empty() )
-                tagname += std::string(" name=\"") + escape_string(name) + "\"";
-
             break;
     }
 
